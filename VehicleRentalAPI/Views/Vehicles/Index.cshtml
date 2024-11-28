@@ -1,0 +1,201 @@
+﻿@model IEnumerable<VehicleRentalAPI.Models.Vehicle>
+
+@{
+    ViewData["Title"] = "Manage Vehicles";
+}
+
+<div class="modern-table-container">
+    <h2 class="table-title">Vehicle Management</h2>
+
+<!-- Add New Vehicle Button -->
+<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addVehicleModal">Add New Vehicle</button>
+
+<!-- Vehicles Table -->
+    <table class="modern-table">
+    <thead>
+        <tr>
+            
+            <th>Model</th>
+            <th>Type</th>
+            <th>Price Per Day</th>
+            <th>Availability</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vehicle in Model)
+        {
+            <tr>
+                
+                <td>@vehicle.Model</td>
+                <td>@vehicle.Type</td>
+                <td>@vehicle.PricePerDay</td>
+                <td>@vehicle.Availability</td>
+                <td>
+                    @if (vehicle.Image != null)
+                    {
+                        <img src="data:image/png;base64,@(Convert.ToBase64String(vehicle.Image))" alt="Vehicle Image" style="width: 100px; height: auto;" />
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
+                <td>
+                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editVehicleModal-@vehicle.VehicleID">Edit</button>
+                    <form id="deleteForm-@vehicle.VehicleID" asp-action="Delete" asp-route-id="@vehicle.VehicleID" method="post" style="display:inline;">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(@vehicle.VehicleID)">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+<!-- Add Vehicle Modal -->
+<div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addVehicleModalLabel">Add New Vehicle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="Model" class="form-label">Model</label>
+                        <input type="text" class="form-control" id="Model" name="Model" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Type" class="form-label">Type</label>
+                        <input type="text" class="form-control" id="Type" name="Type" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="PricePerDay" class="form-label">Price Per Day</label>
+                        <input type="number" class="form-control" id="PricePerDay" name="PricePerDay" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Availability" class="form-label">Availability</label>
+                        <select class="form-control" id="Availability" name="Availability" required>
+                            <option value="Available">Available</option>
+                            <option value="Unavailable">Unavailable</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ImageFile" class="form-label">Image</label>
+                        <input type="file" class="form-control" id="ImageFile" name="ImageFile" accept="image/*">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Vehicle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Vehicle Modals -->
+@foreach (var vehicle in Model)
+{
+    <div class="modal fade" id="editVehicleModal-@vehicle.VehicleID" tabindex="-1" aria-labelledby="editVehicleModalLabel-@vehicle.VehicleID" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="VehicleID" value="@vehicle.VehicleID" />
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editVehicleModalLabel-@vehicle.VehicleID">Edit Vehicle</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="Model" class="form-label">Model</label>
+                            <input type="text" class="form-control" id="Model" name="Model" value="@vehicle.Model" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Type" class="form-label">Type</label>
+                            <input type="text" class="form-control" id="Type" name="Type" value="@vehicle.Type" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="PricePerDay" class="form-label">Price Per Day</label>
+                            <input type="number" class="form-control" id="PricePerDay" name="PricePerDay" value="@vehicle.PricePerDay" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Availability" class="form-label">Availability</label>
+                            <select class="form-control" id="Availability" name="Availability" required>
+                                @if (vehicle.Availability == "Available")
+                                {
+                                    <option value="Available" selected>Available</option>
+                                    <option value="Unavailable">Unavailable</option>
+                                }
+                                else
+                                {
+                                    <option value="Available">Available</option>
+                                    <option value="Unavailable" selected>Unavailable</option>
+                                }
+                            </select>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="ImageFile" class="form-label">Change Image</label>
+                            <input type="file" class="form-control" id="ImageFile" name="ImageFile" accept="image/*">
+                        </div>
+                        @if (vehicle.Image != null)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Current Image:</label><br />
+                                <img src="data:image/png;base64,@(Convert.ToBase64String(vehicle.Image))" alt="Vehicle Image" style="width: 100px; height: auto;" />
+                            </div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <text>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '@TempData["SuccessMessage"]'
+        });
+        </text>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <text>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '@TempData["ErrorMessage"]'
+        });
+        </text>
+    }
+
+    function confirmDelete(vehicleId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(`deleteForm-${vehicleId}`).submit();
+            }
+        });
+    }
+</script>

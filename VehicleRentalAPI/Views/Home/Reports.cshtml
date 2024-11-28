@@ -1,0 +1,127 @@
+﻿@{
+    ViewData["Title"] = "Reports";
+}
+
+<div class="features-section">
+    <!-- Overview Section -->
+    <div class="row mb-4">
+        <!-- Total Rentals Card -->
+        <div class="custom-card">
+            <div class="card custom-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Rentals</h5>
+                    <h3>@Model.TotalRentals</h3>
+                    <p class="card-text">Number of all rentals</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Revenue Card -->
+        <div class="custom-card">
+            <div class="card custom-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Revenue</h5>
+                    <h3>RM @Model.TotalRevenue</h3>
+                    <p class="card-text">Total revenue generated from rentals</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Vehicles Card -->
+        <div class="custom-card">
+            <div class="card custom-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Vehicles</h5>
+                    <h3>@Model.TotalVehicles</h3>
+                    <p class="card-text">Total number of vehicles in the system</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Customers Card -->
+        <div class="custom-card">
+            <div class="card custom-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Customers</h5>
+                    <h3>@Model.TotalCustomers</h3>
+                    <p class="card-text">Total number of customers registered</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="container py-4">
+    <h1 class="text-center mb-4">Reports</h1>
+
+    <!-- Vehicle Usage Report -->
+    <div class="report-section mb-5" id="vehicleUsageSection">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Vehicle Usage Report</h2>
+            <button class="btn btn-primary" onclick="printSection('vehicleUsageSection')">Print</button>
+        </div>
+        <div class="modern-table-container">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th>Vehicle Model</th>
+                        <th>Total Rentals</th>
+                        <th>Total Revenue (RM)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vehicle in Model.VehicleUsage)
+                    {
+                        <tr>
+                            <td>@vehicle.VehicleModel</td>
+                            <td>@vehicle.RentalsCount</td>
+                            <td>@vehicle.TotalRevenue.ToString("F2")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Revenue Report -->
+    <div class="report-section" id="revenueSection">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Revenue Report</h2>
+            <button class="btn btn-primary" onclick="printSection('revenueSection')">Print</button>
+        </div>
+        <div class="modern-table-container">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Total Revenue (RM)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.RevenueLabels.Count; i++)
+                    {
+                        <tr>
+                            <td>@Model.RevenueLabels[i]</td>
+                            <td>@Model.RevenueData[i].ToString("F2")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function printSection(sectionId) {
+        var printContent = document.getElementById(sectionId).innerHTML;
+        var originalContent = document.body.innerHTML;
+
+        document.body.innerHTML = printContent;
+        window.print();
+        document.body.innerHTML = originalContent;
+        location.reload(); // Reload the page to restore functionality
+    }
+</script>

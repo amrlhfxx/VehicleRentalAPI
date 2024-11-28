@@ -1,0 +1,622 @@
+/* Overall Page Styling */
+body {
+    background: linear-gradient(to bottom right, #ffffff, #e6f7ff); /* Light blue gradient */
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Styling */
+header {
+    background-color: #007bff; /* Dark blue header */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+    /* Main Title in Header */
+    header h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    /* Subtitle in Header */
+    header p {
+        font-size: 1.25rem;
+        margin: 10px 0;
+    }
+
+/* Card Styling for Sections */
+.card.custom-card {
+    border: 2px solid #007bff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+    transition: transform 0.3s ease;
+}
+
+    .card.custom-card:hover {
+        transform: translateY(-5px); /* Slight lift on hover */
+    }
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #007bff;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Custom Button Styling */
+.custom-btn {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    .custom-btn:hover {
+        background-color: #0056b3; /* Darker blue for hover effect */
+    }
+
+/* Footer Styling */
+footer {
+    background-color: #343a40; /* Dark gray footer */
+    color: #ccc; /* Light gray text */
+    padding: 10px 0;
+    text-align: center;
+}
+
+    footer p {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+/* Responsive Design for Small Screens */
+@media (max-width: 768px) {
+    .col-md-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    h1.display-4 {
+        font-size: 2rem;
+    }
+
+    p.lead {
+        font-size: 1.1rem;
+    }
+}
+
+
+
+/*NAVBAR*/
+/* Navbar Brand Styling */
+.navbar-brand {
+    display: flex;
+    align-items: center; /* Align logo and text vertically */
+    gap: 10px; /* Add spacing between the logo and text */
+}
+
+    .navbar-brand img {
+        max-height: 40px; /* Logo height */
+        vertical-align: middle; /* Ensure the logo aligns with text */
+    }
+
+    .navbar-brand span {
+        font-size: 1.2rem; /* Slightly larger text for the brand name */
+        font-weight: bold; /* Make the text stand out */
+        color: #007bff; /* Blue text color to match theme */
+    }
+
+        .navbar-brand span:hover {
+            color: #0056b3; /* Darker blue on hover */
+        }
+
+/* Navbar Links */
+.navbar-nav .nav-link {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #007bff;
+}
+
+    .navbar-nav .nav-link:hover {
+        color: #0056b3;
+    }
+
+
+/*REPORTS PGE*/
+/* Statistics Card */
+.stats-card {
+    background: #ffffff;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .stats-card h3 {
+        font-size: 1.25rem;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    .stats-card .stats-value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 5px;
+    }
+
+    .stats-card .stats-description {
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+
+/*HOME PAGE*/
+
+
+/* General Section Styling with Border */
+.section-with-border {
+    background-color: #ffffff; /* White background for contrast */
+    border: 2px solid #007bff; /* Blue border for consistency */
+    border-radius: 10px; /* Rounded corners */
+    padding: 30px; /* Padding inside the section */
+    margin: 20px auto; /* Spacing around the section */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+
+/* Welcome Section with Box Background */
+.hero-section {
+    background-color: #f9f9f9; /* Light gray background */
+    border: 2px solid #007bff; /* Blue border for emphasis */
+    border-radius: 10px; /* Rounded corners */
+    padding: 30px; /* Internal padding for spacing */
+    margin: 20px auto; /* External spacing */
+    text-align: center; /* Center-align text */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    max-width: 90%; /* Ensures a consistent width */
+}
+
+
+    .hero-section h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .hero-section p {
+        font-size: 1.25rem;
+        margin-bottom: 30px;
+    }
+
+/* Feature Cards */
+.custom-card {
+    border: none;
+    border: 2px solid #007bff; /* Blue border for emphasis */
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .custom-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* About Section */
+.about-section {
+    background-color: #f9f9f9; /* Subtle gray */
+    border: 2px solid #007bff; /* Blue border */
+    border-radius: 8px;
+    padding: 30px;
+    margin: 20px auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    line-height: 1.6;
+    color: #555;
+    text-align: center;
+}
+
+    .about-section h2 {
+        font-size: 1.8rem;
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+
+
+
+.accordion-button {
+    font-weight: bold;
+    color: #0056b3;
+}
+
+    .accordion-button:not(.collapsed) {
+        background-color: #0056b3;
+        color: white;
+    }
+
+.accordion-body {
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+
+/* Features Section */
+.features-section {
+    background-color: #f9f9f9;
+    padding: 40px 0; /* Less padding for a compact look */
+   
+}
+
+    .features-section h2 {
+        text-align: center;
+        font-size: 1.8rem; /* Slightly smaller font size */
+        color: #343a40;
+        margin-bottom: 20px; /* Reduce space below the title */
+    }
+
+    .features-section .row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Smaller minimum size */
+        gap: 15px; /* Reduce gap between cards */
+        justify-content: center;
+        align-items: stretch;
+
+    }
+
+/* Feature Card Styling */
+.custom-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    background: #ffffff;
+    border: 2px solid #007bff;
+    border-radius: 10px; /* Smaller border radius */
+    padding: 15px; /* Less padding for compactness */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%; /* Consistent height */
+}
+
+    .custom-card h5 {
+        font-size: 1.1rem; /* Smaller font size */
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    .custom-card p {
+        flex-grow: 1; /* Makes the cards stretch evenly */
+        font-size: 0.9rem; /* Smaller font size */
+        color: #555;
+        margin-bottom: 10px; /* Less margin below */
+    }
+
+    .custom-card .custom-btn {
+        font-size: 0.9rem; /* Smaller button text */
+        padding: 8px 15px; /* Smaller padding */
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+        .custom-card .custom-btn:hover {
+            background-color: #0056b3;
+        }
+
+    .custom-card:hover {
+        transform: translateY(-3px); /* Subtle hover effect */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+
+
+
+
+
+/*CUSTOMER PAGE*/
+
+/* Card Container Styling for Future Updates */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+    .card-container .card {
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+        .card-container .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-container .card h3 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        .card-container .card p {
+            color: #555;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Table*/
+/* Table Container */
+.modern-table-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    max-width: 90%;
+    margin: 40px auto;
+    transition: transform 0.3s ease;
+}
+
+/* Title and Description */
+.table-title {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.table-description {
+    font-family: 'Arial', sans-serif;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Modern Table Styling */
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.modern-table-container:hover {
+    transform: scale(1.02); /* Slight hover effect */
+}
+
+/* Table Header */
+.modern-table thead tr {
+    background-color: #007bff;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+    /* Table Header */
+    .modern-table thead tr {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    .modern-table thead th {
+        padding: 15px;
+        text-align: center;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+    }
+
+    /* Table Rows */
+    .modern-table tbody tr {
+        text-align: center;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+        .modern-table tbody tr:nth-child(even) {
+            background-color: #f4f4f4;
+        }
+
+        .modern-table tbody tr:hover {
+            background-color: #eaf4ff;
+            transition: 0.3s;
+        }
+
+    /* Table Cells */
+    .modern-table tbody td {
+        padding: 15px;
+        font-size: 0.95rem;
+        color: #555;
+    }
+
+/* Action Buttons */
+.btn-warning {
+    background-color: #ffc107;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    transition: 0.3s ease-in-out;
+}
+
+    .btn-warning:hover {
+        background-color: #e0a800;
+    }
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    transition: 0.3s ease-in-out;
+}
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+/* Rounded Corners for the Whole Table */
+.modern-table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+
+
+
+/*Report Page*/
+
+
+/* Styling for the overall container */
+.container {
+    max-width: 100%;
+    padding: 0 15px;
+}
+
+/* Flex container for the row of cards */
+.row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px; /* Space between cards */
+}
+
+/* Card styling */
+.custom-card {
+    border: 2px solid #dee2e6; /* Set fixed border color and width */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px;
+    text-align: center;
+    height: 200px; /* Fixed height for all cards */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+}
+
+    /* Card Title Styling */
+    .custom-card .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #343a40; /* Dark text color */
+    }
+
+    /* Card Value Styling */
+    .custom-card h3 {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #007bff; /* Highlight the number with blue */
+    }
+
+    /* Card Text (description) styling */
+    .custom-card .card-text {
+        font-size: 1rem;
+        color: #6c757d; /* Lighter text for description */
+    }
+
+/* Styling for the header section */
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+
+
+/*FAQ PAGE*/
+
+/* FAQ Section */
+h1 {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.accordion-item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-button {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 15px;
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+    .accordion-button:focus {
+        box-shadow: none;
+    }
+
+    .accordion-button:hover {
+        background-color: #0056b3;
+    }
+
+.accordion-body {
+    background-color: #f9f9f9;
+    padding: 20px;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.accordion-button i {
+    font-size: 1.2rem;
+}

@@ -1,0 +1,202 @@
+﻿@{
+    ViewData["Title"] = "Reports";
+}
+
+<div class="container mt-5">
+    <!-- Overview Section -->
+    <div class="row mb-4">
+        <!-- Total Rentals Card -->
+        <div class="col-md-3 mb-3">
+            <div class="card custom-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Rentals</h5>
+                    <h3>@Model.TotalRentals</h3>
+                    <p class="card-text">Number of all rentals</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Revenue Card -->
+        <div class="col-md-3 mb-3">
+            <div class="card custom-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Revenue</h5>
+                    <h3>RM @Model.TotalRevenue</h3>
+                    <p class="card-text">Total revenue generated from rentals</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Vehicles Card -->
+        <div class="col-md-3 mb-3">
+            <div class="card custom-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Vehicles</h5>
+                    <h3>@Model.TotalVehicles</h3>
+                    <p class="card-text">Total number of vehicles in the system</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Customers Card -->
+        <div class="col-md-3 mb-3">
+            <div class="card custom-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Customers</h5>
+                    <h3>@Model.TotalCustomers</h3>
+                    <p class="card-text">Total number of customers registered</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="container py-4">
+    <h1 class="text-center mb-4">Reports</h1>
+
+    <!-- Customers Report -->
+    <div class="report-section mb-5">
+        <h2 class="mb-3">List of Customers</h2>
+        <div class="modern-table-container">
+            <table class="modern-table" id="customersTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be dynamically populated -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Vehicles Report -->
+    <div class="report-section mb-5">
+        <h2 class="mb-3">List of Vehicles</h2>
+        <div class="modern-table-container">
+            <table class="modern-table" id="vehiclesTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Model</th>
+                        <th>Type</th>
+                        <th>Price Per Day</th>
+                        <th>Availability</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be dynamically populated -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Rentals Report -->
+    <div class="report-section">
+        <h2 class="mb-3">List of Rentals</h2>
+        <div class="modern-table-container">
+            <table class="modern-table" id="rentalsTable">
+                <thead>
+                    <tr>
+                        <th>Rental ID</th>
+                        <th>Customer Name</th>
+                        <th>Vehicle</th>
+                        <th>Rental Date</th>
+                        <th>Return Date</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be dynamically populated -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Include the Chart.js library for the graph -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('revenueChart').getContext('2d');
+        var revenueChart = new Chart(ctx, {
+            type: 'line', // Line chart for revenue over time
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.RevenueLabels)), // e.g., ["Jan/2024", "Feb/2024", "Mar/2024"]
+                datasets: [{
+                    label: 'Revenue',
+                    data: @Html.Raw(Json.Serialize(Model.RevenueData)), // e.g., [1000, 2000, 1500]
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+<script>
+    // Fetch Customers
+    fetch('/api/customers')
+        .then(response => response.json())
+        .then(data => {
+            const customersTable = document.querySelector('#customersTable tbody');
+            data.forEach(customer => {
+                customersTable.innerHTML += `
+                        <tr>
+                            <td>${customer.customerID}</td>
+                            <td>${customer.name}</td>
+                            <td>${customer.email}</td>
+                            <td>${customer.phone}</td>
+                        </tr>`;
+            });
+        });
+
+    // Fetch Vehicles
+    fetch('/api/vehicles')
+        .then(response => response.json())
+        .then(data => {
+            const vehiclesTable = document.querySelector('#vehiclesTable tbody');
+            data.forEach(vehicle => {
+                vehiclesTable.innerHTML += `
+                        <tr>
+                            <td>${vehicle.vehicleID}</td>
+                            <td>${vehicle.model}</td>
+                            <td>${vehicle.type}</td>
+                            <td>${vehicle.pricePerDay}</td>
+                            <td>${vehicle.availability}</td>
+                        </tr>`;
+            });
+        });
+
+    // Fetch Rentals
+    fetch('/api/rentals')
+        .then(response => response.json())
+        .then(data => {
+            const rentalsTable = document.querySelector('#rentalsTable tbody');
+            data.forEach(rental => {
+                rentalsTable.innerHTML += `
+                        <tr>
+                            <td>${rental.rentalID}</td>
+                            <td>${rental.customer.name}</td>
+                            <td>${rental.vehicle.model}</td>
+                            <td>${new Date(rental.rentalDate).toLocaleDateString()}</td>
+                            <td>${new Date(rental.returnDate).toLocaleDateString()}</td>
+                            <td>${rental.totalAmount.toFixed(2)}</td>
+                        </tr>`;
+            });
+        });
+</script>

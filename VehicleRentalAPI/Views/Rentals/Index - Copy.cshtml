@@ -1,0 +1,244 @@
+﻿@model IEnumerable<VehicleRentalAPI.Models.Rental>
+
+@{
+    ViewData["Title"] = "Manage Rentals";
+}
+
+<h2>Manage Rentals</h2>
+
+<!-- Add New Rental Button -->
+<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addRentalModal">Add New Rental</button>
+
+<!-- Rentals Table -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+           
+            <th>Customer</th>
+            <th>Vehicle</th>
+            <th>Rental Date</th>
+            <th>Return Date</th>
+            <th>Total Days</th>
+            <th>Total Amount</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rental in Model)
+        {
+            <tr>
+                
+                <td>@rental.Customer.Name</td>
+                <td>@rental.Vehicle.Model</td>
+                <td>@rental.RentalDate.ToShortDateString()</td>
+                <td>@(rental.ReturnDate.HasValue ? rental.ReturnDate.Value.ToShortDateString() : "N/A")</td>
+                <td>@((rental.ReturnDate.HasValue ? (rental.ReturnDate.Value - rental.RentalDate).Days + 1 : 0))</td>
+                <td>@rental.TotalAmount</td>
+                <td>
+                    <!-- Edit Button -->
+                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editRentalModal-@rental.RentalID">Edit</button>
+                    <form id="deleteForm-@rental.RentalID" asp-action="Delete" asp-route-id="@rental.RentalID" method="post" style="display:inline;">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(@rental.RentalID)">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Add Rental Modal -->
+<div class="modal fade" id="addRentalModal" tabindex="-1" aria-labelledby="addRentalModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRentalModalLabel">Add New Rental</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="CustomerID" class="form-label">Customer</label>
+                        <select class="form-control" id="CustomerID" name="CustomerID" required>
+                            <option value="">Select Customer</option>
+                            @foreach (var customer in ViewBag.Customers)
+                            {
+                                <option value="@customer.CustomerID">@customer.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="VehicleID" class="form-label">Vehicle</label>
+                        <select class="form-control" id="VehicleID" name="VehicleID" required>
+                            <option value="">Select Vehicle</option>
+                            @foreach (var vehicle in ViewBag.Vehicles)
+                            {
+                                <option value="@vehicle.VehicleID" data-price="@vehicle.PricePerDay">
+                                    @($"{vehicle.Model} RM{vehicle.PricePerDay}/per day")
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="RentalDate" class="form-label">Rental Date</label>
+                        <input type="date" class="form-control" id="RentalDate" name="RentalDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ReturnDate" class="form-label">Return Date</label>
+                        <input type="date" class="form-control" id="ReturnDate" name="ReturnDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="TotalDays" class="form-label">Total Days</label>
+                        <input type="text" class="form-control" id="TotalDays" name="TotalDays" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="TotalAmount" class="form-label">Total Amount</label>
+                        <input type="text" class="form-control" id="TotalAmount" name="TotalAmount" readonly>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Rental</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Rental Modal -->
+@foreach (var rental in Model)
+{
+    <div class="modal fade" id="editRentalModal-@rental.RentalID" tabindex="-1" aria-labelledby="editRentalModalLabel-@rental.RentalID" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" name="RentalID" value="@rental.RentalID" />
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editRentalModalLabel-@rental.RentalID">Edit Rental</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="CustomerID" class="form-label">Customer</label>
+                            <select class="form-control" id="CustomerID" name="CustomerID" required>
+                                <option value="">Select Customer</option>
+                                @foreach (var customer in ViewBag.Customers)
+                                {
+                                    <option value="@customer.CustomerID">@customer.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="VehicleID" class="form-label">Vehicle</label>
+                            <select class="form-control" id="VehicleID" name="VehicleID" required>
+                                <option value="">Select Vehicle</option>
+                                @foreach (var vehicle in ViewBag.Vehicles)
+                                {
+                                    <option value="@vehicle.VehicleID" data-price="@vehicle.PricePerDay">
+                                        @($"{vehicle.Model} RM{vehicle.PricePerDay}/per day")
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="RentalDate" class="form-label">Rental Date</label>
+                            <input type="date" class="form-control" id="RentalDate" name="RentalDate" value="@rental.RentalDate.ToString("yyyy-MM-dd")" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ReturnDate" class="form-label">Return Date</label>
+                            <input type="date" class="form-control" id="ReturnDate" name="ReturnDate" value="@(rental.ReturnDate.HasValue ? rental.ReturnDate.Value.ToString("yyyy-MM-dd") : "")">
+                        </div>
+                        <div class="mb-3">
+                            <label for="TotalDays" class="form-label">Total Days</label>
+                            <input type="text" class="form-control" id="TotalDays" name="TotalDays" readonly value="@(rental.ReturnDate.HasValue ? (rental.ReturnDate.Value - rental.RentalDate).Days + 1 : 0)">
+                        </div>
+                        <div class="mb-3">
+                            <label for="TotalAmount" class="form-label">Total Amount</label>
+                            <input type="text" class="form-control" id="TotalAmount" name="TotalAmount" readonly value="@(rental.TotalAmount)">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- SweetAlert for Feedback -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let pricePerDay = 0; // Initialize pricePerDay
+
+        const vehicleDropdown = document.getElementById('VehicleID'); // Vehicle dropdown
+        const rentalDateInput = document.getElementById('RentalDate');
+        const returnDateInput = document.getElementById('ReturnDate');
+        const totalDaysInput = document.getElementById('TotalDays');
+        const totalAmountInput = document.getElementById('TotalAmount');
+
+        // Event listener to get the price per day when a vehicle is selected
+        vehicleDropdown.addEventListener('change', function () {
+            const selectedOption = vehicleDropdown.options[vehicleDropdown.selectedIndex];
+            pricePerDay = parseFloat(selectedOption.getAttribute('data-price')) || 0; // Get price from data-price attribute
+            calculateTotal(); // Recalculate total when vehicle changes
+        });
+
+        // Ensure ReturnDate is after RentalDate
+        rentalDateInput.addEventListener('change', function () {
+            returnDateInput.setAttribute('min', rentalDateInput.value); // Set ReturnDate min to RentalDate
+            calculateTotal(); // Recalculate total when rental date changes
+        });
+
+        returnDateInput.addEventListener('change', function () {
+            calculateTotal(); // Recalculate total when return date changes
+        });
+
+        // Function to calculate total days and total amount
+        function calculateTotal() {
+            const rentalDate = new Date(rentalDateInput.value);
+            const returnDate = new Date(returnDateInput.value);
+
+            // Check if both dates are valid
+            if (!isNaN(rentalDate) && !isNaN(returnDate)) {
+                if (returnDate >= rentalDate) {
+                    const totalDays = Math.ceil((returnDate - rentalDate) / (1000 * 60 * 60 * 24)) + 1; // Inclusive of both days
+                    totalDaysInput.value = totalDays;
+                    totalAmountInput.value = (totalDays * pricePerDay).toFixed(2); // Total Amount = Total Days * Price Per Day
+                } else {
+                    totalDaysInput.value = '';
+                    totalAmountInput.value = '';
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid Dates',
+                        text: 'Return date must be on or after the rental date.'
+                    });
+                }
+            } else {
+                totalDaysInput.value = '';
+                totalAmountInput.value = '';
+            }
+        }
+
+        // Check if there's a success or error message from TempData
+        var successMessage = '@TempData["SuccessMessage"]';
+        var errorMessage = '@TempData["ErrorMessage"]';
+
+        if (successMessage) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: successMessage
+            });
+        }
+
+        if (errorMessage) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errorMessage
+            });
+        }
+    });
+</script>
